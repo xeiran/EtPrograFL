@@ -1,4 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
+import { faMapPin } from '@fortawesome/free-solid-svg-icons';
 
 declare var google: any;
 
@@ -9,6 +11,8 @@ declare var google: any;
 })
 export class HomePage {
   map: any;
+  lat;
+  lng;
 
   @ViewChild('map', { read: ElementRef, static: false }) mapRef: ElementRef;
 
@@ -16,26 +20,51 @@ export class HomePage {
   markers: any = [
     {
       title: 'National Art Gallery',
-      latitude: '-17.824991',
-      longitude: '31.049295',
+      latitude: '36.7744',
+      longitude: '-119.7306',
     },
     {
       title: 'West End Hospital',
-      latitude: '-17.820987',
-      longitude: '31.039682',
+      latitude: '36.7750',
+      longitude: '-119.7310',
     },
     {
       title: 'Chop Chop Steakhouse',
-      latitude: '-17.829460',
-      longitude: '31.053844',
+      latitude: '36.7735',
+      longitude: '-119.7300',
     },
   ];
 
-  constructor() {}
+  constructor(private geo: Geolocation) {}
 
-  ionViewDidEnter() {
-    this.showMap();
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    this.whereIam();
   }
+
+  whereIam() {
+    this.geo
+      .getCurrentPosition({
+        timeout: 10000,
+        enableHighAccuracy: true,
+      })
+      .then((res) => {
+        this.lat = String(res.coords.latitude);
+        this.lng = String(res.coords.longitude);
+        this.showMap();
+        console.log('result ', res);
+        console.log('lat', this.lat);
+        console.log('lng ', this.lng);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  // ionViewDidEnter() {
+  //   this.showMap();
+  // }
 
   addMarkersToMap(markers) {
     for (let marker of markers) {
@@ -45,6 +74,19 @@ export class HomePage {
         title: marker.title,
         latitude: marker.latitude,
         longitude: marker.longitude,
+        icon: {
+          path: faMapPin.icon[4] as string,
+          fillColor: '#ffff00',
+          fillOpacity: 1,
+          anchor: new google.maps.Point(
+            faMapPin.icon[0] / 2, // width
+            faMapPin.icon[1] // height
+          ),
+          strokeWeight: 1,
+          strokeColor: '#ffffff',
+          scale: 0.075,
+        },
+        //icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/parking_lot_maps.png',
       });
 
       mapmarker.setMap(this.map);
@@ -83,10 +125,10 @@ export class HomePage {
   }
 
   showMap() {
-    const location = new google.maps.LatLng(-17.824858, 31.053028);
+    const location = new google.maps.LatLng(this.lat, this.lng);
     const options = {
       center: location,
-      zoom: 18,
+      zoom: 19,
       disableDefaultUI: true,
       mapTypeId: google.maps.MapTypeId.SATELLITE,
     };

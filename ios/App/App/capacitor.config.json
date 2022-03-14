@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "codeswag-map",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
