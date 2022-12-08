@@ -1,34 +1,31 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { HomePage } from './home/home.page';
+
 
 const routes: Routes = [
+
   {
-    path: 'tabs',
-    component: HomePage,
-    children: [
-      {
-        path: 'home',
-        loadChildren: () =>
-          import('./home/home.module').then((m) => m.HomePageModule),
-      },
-      {
-        path: '',
-        redirectTo: 'home',
-        pathMatch: 'full',
-      },
-      {
-        path: 'photo',
-        loadChildren: () =>
-          import('./photo/photo.module').then((m) => m.PhotoPageModule),
-      },
-    ],
+    path: 'login/home',
+    loadChildren: () => import('./home/home.module').then((m) => m.HomePageModule),
   },
   {
     path: '',
-    redirectTo: '/tabs/home',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
+  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'login/registrar',
+    loadChildren: () => import('./registrar/registrar.module').then( m => m.RegistrarPageModule)
+  },
+  {
+    path: 'login/recuperar-pass',
+    loadChildren: () => import('./recuperar-pass/recuperar-pass.module').then( m => m.RecuperarPassPageModule)
+  },
+
 ];
 
 @NgModule({

@@ -130,7 +130,7 @@ export class HomePage {
       center: location,
       zoom: 19,
       disableDefaultUI: true,
-      mapTypeId: google.maps.MapTypeId.SATELLITE,
+      mapTypeId: google.maps.MapTypeId.roadmap,
     };
     this.map = new google.maps.Map(this.mapRef.nativeElement, options);
     this.addMarkersToMap(this.markers);

@@ -9,7 +9,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { Geolocation } from '@awesome-cordova-plugins/geolocation/ngx';
 import { Camera, CameraOptions } from '@awesome-cordova-plugins/camera/ngx';
-
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
